@@ -217,6 +217,7 @@
 		463FC6871DF8607700285030 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				DEVELOPMENT_TEAM = G99XDZV8G2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -225,6 +226,7 @@
 		463FC6881DF8607700285030 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				DEVELOPMENT_TEAM = G99XDZV8G2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
