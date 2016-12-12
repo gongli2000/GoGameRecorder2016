@@ -1,81 +1,102 @@
-
-#include <opencv2/core/core.hpp>
-#include "opencv2/imgproc/imgproc.hpp"
 #include "opencv2/highgui/highgui.hpp"
-#include <stdlib.h>
+#include "opencv2/imgproc/imgproc.hpp"
+#include "opencv2/features2d.hpp"
+#include <iostream>
 #include <stdio.h>
+#include <stdlib.h>
+
+#include "perspectiveTransform.hpp"
+#include "drawing.hpp"
 
 using namespace cv;
+using namespace std;
 
-/// Global variables
 
-Mat src, src_gray;
-Mat dst, detected_edges;
+void thresh_callback(int, void* );
+int testContours( Mat& src );
+void capturecamera();
+void dothresh(Mat& src, int threshold);
+void capturecontours();
+Mat getoneframe();
+void findlargestcontour(Mat& src);
+int maxcontourarea(vector<vector<Point>> &contours);
+void loopForBoundingRect();
+void blobdetector();
 
-int edgeThresh = 1;
-int lowThreshold;
-int const max_lowThreshold = 50;
-int ratio = 3;
-int kernel_size = 3;
-string window_name = "Edge Map";
-
-/**
- * @function CannyThreshold
- * @brief Trackbar callback - Canny thresholds input with a ratio 1:3
- */
-void CannyThreshold(int, void*)
+int main(int, char**)
 {
-    /// Reduce noise with a kernel 3x3
-    blur( src_gray, detected_edges, Size(3,3) );
-    
-    /// Canny detector
-    int lt = lowThreshold+20;
-    Canny( detected_edges, detected_edges, lt, lt*ratio, kernel_size );
-    
-    /// Using Canny's output as a mask, we display our result
-    dst = Scalar::all(0);
-    
-    src.copyTo( dst, detected_edges);
-    imshow( window_name, dst );
-}
-
-// update
-// adsfdsf
-/** @function main */
-int main( int argc, char** argv )
-{
-    /// Create a window
-    namedWindow( window_name, CV_WINDOW_AUTOSIZE );
-    
-    /// Create a Trackbar for user to enter threshold
-    createTrackbar( "Min Threshold:", window_name, &lowThreshold, max_lowThreshold, CannyThreshold );
-    
-    
-    VideoCapture cap(0); // open the default camera
-    if(!cap.isOpened())  // check if we succeeded
-        return -1;
-    
-    
-    for(;;)
-    {
-        //Mat frame;
-        cap >> src; // get a new frame from camera
-        
-        /// Create a matrix of the same type and size as src (for dst)
-        dst.create( src.size(), src.type() );
-        
-        /// Convert the image to grayscale
-        cvtColor( src, src_gray, CV_BGR2GRAY );
-        
-        
-        /// Show the image
-        CannyThreshold(0, 0);
-        
-        if(waitKey(30) >= 0) break;
-    }
-    
-    
-    
-    
+//    Mat src = imread("/Users/larry/sampleimages/lenna.png", 1);
+   loopForBoundingRect();
+//    blobdetector();
     return 0;
 }
+
+
+
+void loopForBoundingRect()
+{
+    VideoCapture cap(0);
+    if(!cap.isOpened())return;
+   
+    Mat map;
+    vector<Point> h;
+    bool nomap = true;
+    bool loop = true;
+    bool orient=false;
+    int delta = 25;
+    int boardsize = 19;
+    namedWindow( "warped",CV_WINDOW_AUTOSIZE);
+    namedWindow( "Contours",CV_WINDOW_AUTOSIZE);
+    int orientation = 2;
+    Scalar color(0,0,255);
+
+    for(;;){
+        
+        Mat cframe;
+        cap >> cframe;
+        
+        if(loop || nomap ){
+            if(!orient){
+                h = tryToGetBoundingRectOfBoard(cap);
+//                Mat temp = cframe.clone();
+//                Mat temp2;
+//                map = getPerspectiveMap(temp.size(), h,orientation,0);
+//                warpPerspective(temp, temp2, map, temp.size());
+//                vector<Point> g = getBoundingRectOfBoard(temp2);
+//                
+//                Mat invmap = cv::getPerspectiveTransform(g,h);
+//                waitKey(0);
+            }
+            map = getPerspectiveMap(cframe.size(), h,orientation,delta);
+            nomap = false;
+            orient=false;
+        }
+        
+        Mat mappedImage = cframe.clone();
+        warpPerspective(cframe, mappedImage, map, cframe.size());
+        
+        drawpoly(cframe, h, color, 2);
+        resize(cframe, cframe, Size(cframe.cols/2.5, cframe.rows/2.5));
+        imshow( "Contours", cframe );
+        moveWindow("Contours", 30, 30);
+    
+    
+        drawgrid(mappedImage, delta, boardsize, Scalar(0,255,0), 3);
+        resize(mappedImage, mappedImage, Size(mappedImage.cols/2.7, mappedImage.rows/2));
+        imshow("warped", mappedImage);
+        moveWindow("warped",100 + cframe.cols, 30);
+        
+        
+        switch(waitKey(1)){
+            case 'c': nomap=true; break;
+            case 'l': loop = !loop; break;
+            case '1': orientation = 0;orient=true;nomap=true;break;
+            case '2': orientation = 1;orient=true;nomap=true;break;
+            case '3': orientation = 2;orient=true;nomap=true;break;
+            case '4': orientation = 3;orient=true;nomap=true;break;
+                
+        }
+        
+    }
+}
+

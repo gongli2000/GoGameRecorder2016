@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		463B5D861DF9F5DC00B2F4A3 /* transformBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 463B5D841DF9F5DC00B2F4A3 /* transformBoard.cpp */; };
-		463FC6831DF8607700285030 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 463FC6821DF8607700285030 /* main.cpp */; };
+		460C8E1C1DFE5B680016DC84 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 460C8E161DFE5B680016DC84 /* main.cpp */; };
+		460C8E1D1DFE5B680016DC84 /* perspectiveTransform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 460C8E171DFE5B680016DC84 /* perspectiveTransform.cpp */; };
+		460C8E1E1DFE5B680016DC84 /* drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 460C8E191DFE5B680016DC84 /* drawing.cpp */; };
+		460C8E1F1DFE5B680016DC84 /* tests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 460C8E1B1DFE5B680016DC84 /* tests.cpp */; };
 		463FC69F1DF8635500285030 /* libIex-2_2.12.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 463FC6891DF8635500285030 /* libIex-2_2.12.dylib */; };
 		463FC6A01DF8635500285030 /* libIexMath-2_2.12.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 463FC68A1DF8635500285030 /* libIexMath-2_2.12.dylib */; };
 		463FC6A11DF8635500285030 /* libIlmImf-2_2.22.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 463FC68B1DF8635500285030 /* libIlmImf-2_2.22.dylib */; };
@@ -46,10 +48,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		463B5D841DF9F5DC00B2F4A3 /* transformBoard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = transformBoard.cpp; sourceTree = "<group>"; };
-		463B5D851DF9F5DC00B2F4A3 /* transformBoard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = transformBoard.hpp; sourceTree = "<group>"; };
+		460C8E161DFE5B680016DC84 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		460C8E171DFE5B680016DC84 /* perspectiveTransform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = perspectiveTransform.cpp; sourceTree = "<group>"; };
+		460C8E181DFE5B680016DC84 /* perspectiveTransform.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = perspectiveTransform.hpp; sourceTree = "<group>"; };
+		460C8E191DFE5B680016DC84 /* drawing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = drawing.cpp; sourceTree = "<group>"; };
+		460C8E1A1DFE5B680016DC84 /* drawing.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = drawing.hpp; sourceTree = "<group>"; };
+		460C8E1B1DFE5B680016DC84 /* tests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tests.cpp; sourceTree = "<group>"; };
+		460C8E201DFE5B8E0016DC84 /* tests.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tests.hpp; sourceTree = "<group>"; };
 		463FC67F1DF8607700285030 /* GoGameRecorder */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GoGameRecorder; sourceTree = BUILT_PRODUCTS_DIR; };
-		463FC6821DF8607700285030 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		463FC6891DF8635500285030 /* libIex-2_2.12.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libIex-2_2.12.dylib"; path = "/usr/local/Cellar/ilmbase/2.2.0/lib/libIex-2_2.12.dylib"; sourceTree = "<absolute>"; };
 		463FC68A1DF8635500285030 /* libIexMath-2_2.12.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libIexMath-2_2.12.dylib"; path = "/usr/local/Cellar/ilmbase/2.2.0/lib/libIexMath-2_2.12.dylib"; sourceTree = "<absolute>"; };
 		463FC68B1DF8635500285030 /* libIlmImf-2_2.22.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libIlmImf-2_2.22.dylib"; path = "/usr/local/Cellar/openexr/2.2.0/lib/libIlmImf-2_2.22.dylib"; sourceTree = "<absolute>"; };
@@ -127,9 +133,13 @@
 		463FC6811DF8607700285030 /* GoGameRecorder */ = {
 			isa = PBXGroup;
 			children = (
-				463FC6821DF8607700285030 /* main.cpp */,
-				463B5D841DF9F5DC00B2F4A3 /* transformBoard.cpp */,
-				463B5D851DF9F5DC00B2F4A3 /* transformBoard.hpp */,
+				460C8E161DFE5B680016DC84 /* main.cpp */,
+				460C8E171DFE5B680016DC84 /* perspectiveTransform.cpp */,
+				460C8E181DFE5B680016DC84 /* perspectiveTransform.hpp */,
+				460C8E191DFE5B680016DC84 /* drawing.cpp */,
+				460C8E1A1DFE5B680016DC84 /* drawing.hpp */,
+				460C8E1B1DFE5B680016DC84 /* tests.cpp */,
+				460C8E201DFE5B8E0016DC84 /* tests.hpp */,
 			);
 			path = GoGameRecorder;
 			sourceTree = "<group>";
@@ -221,8 +231,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				463FC6831DF8607700285030 /* main.cpp in Sources */,
-				463B5D861DF9F5DC00B2F4A3 /* transformBoard.cpp in Sources */,
+				460C8E1C1DFE5B680016DC84 /* main.cpp in Sources */,
+				460C8E1F1DFE5B680016DC84 /* tests.cpp in Sources */,
+				460C8E1E1DFE5B680016DC84 /* drawing.cpp in Sources */,
+				460C8E1D1DFE5B680016DC84 /* perspectiveTransform.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
