@@ -14,7 +14,7 @@
 // to destination rect which just a rect of size s
 Mat getPerspectiveMap(Size s, vector<cv::Point> &srcVec, int orientation,int dx)
 {
-    Point2f dst[]={
+    vector<Point2f> dst ={
         Point2f(dx,dx),
         Point(s.width-dx,dx),
         Point(s.width-dx,s.height-dx),
@@ -28,29 +28,34 @@ Mat getPerspectiveMap(Size s, vector<cv::Point> &srcVec, int orientation,int dx)
     vector<int> indices = indicesArray[orientation];
 
 
-    Point2f src[]={srcVec[indices[0]],srcVec[indices[1]],srcVec[indices[2]],srcVec[indices[3]]};
-    return cv::getPerspectiveTransform(src,dst);
+    vector<Point2f> src ={srcVec[indices[0]],srcVec[indices[1]],srcVec[indices[2]],srcVec[indices[3]]};
+    return getPerspectiveTransform(src,dst);
 }
 
-Mat getInvPerspectiveMap(Size s, vector<cv::Point> &destVec, int orientation,int dx)
+vector<Point2f> destRect(Size s, int delta)
 {
-    Point2f src[]={
-        Point2f(dx,dx),
-        Point(s.width-dx,dx),
-        Point(s.width-dx,s.height-dx),
-        Point(dx,s.height-dx)};
-    
-    vector<int>  botIndices {0,1,2,3} ;
-    vector<int> rightIndices {1,2,3,0};
-    vector<int> leftIndices {2,3,0,1};
-    vector<int> topIndices {3,0,1,2};
-    vector< vector<int> > indicesArray = {rightIndices,botIndices,leftIndices,topIndices};
-    vector<int> indices = indicesArray[orientation];
-    
-    
-    Point2f dst[]={destVec[indices[0]],destVec[indices[1]],destVec[indices[2]],destVec[indices[3]]};
-    return cv::getPerspectiveTransform(src,dst);
+    vector<Point2f> rect {
+        Point2f(delta,delta),
+        Point2f(s.width-delta,delta),
+        Point2f(s.width-delta,s.height-delta),
+        Point2f(delta,s.height-delta)};
+    return rect;
 }
+
+vector<Point2f> srcRect(vector<Point>& r, int orientation)
+{
+    vector<int>  bot {0,1,2,3} ;
+    vector<int> right {1,2,3,0};
+    vector<int> left {2,3,0,1};
+    vector<int> top {3,0,1,2};
+    vector< vector<int> > indicesArray = {right,bot,left,top};
+    
+    vector<int> indx = indicesArray[orientation];
+    vector<Point2f> src {r[indx[0]],r[indx[1]],r[indx[2]],r[indx[3]]};
+    return src;
+}
+
+
 int maxcontourarea(vector<vector<Point>> &contours)
 {
     int largest_area=0;
@@ -79,10 +84,12 @@ vector<Point> getBoundingRectOfBoard(Mat &frame){
     cvtColor(frame, edges, COLOR_BGR2GRAY);
     GaussianBlur(edges, edges, Size(11,11), 1.5, 1.5);
     Canny(edges, canny_output, 0, 30, 3);
-    
+  
     // Get contours from edges
     findContours(canny_output,contours,hierarchy,CV_RETR_TREE,CV_CHAIN_APPROX_SIMPLE,Point(0,0));
-    
+
+
+
     // save the contour with max area as candidate for bounding rect
     int max_area_index = maxcontourarea(contours);
     convexHull( Mat(contours[max_area_index]), hull, false );
@@ -90,25 +97,33 @@ vector<Point> getBoundingRectOfBoard(Mat &frame){
 }
 
 vector<Point>  tryToGetBoundingRectOfBoard(VideoCapture& cap){
-    int ntries = 6;
+    int ntries = 2;
     vector<vector<Point>>  hulls;
+    vector<Point> boundingPoly;
     Mat frame;
     // Try to find bounding rect contour ntries times
     // return the contour
-    for(int cnt =0; cnt < ntries; cnt++){
-        
+    int n=0,ntimes=0;
+    while(n < ntries && (ntimes < 20)){
         if(cap.read(frame)){
-            hulls.push_back( getBoundingRectOfBoard(frame));
+            vector<Point> boundingPoly;
+            vector<Point> r = getBoundingRectOfBoard(frame);
+            double perimeter_length = cv::arcLength(r,true);
+            approxPolyDP( r, boundingPoly, 0.01*perimeter_length, true );
+            if(boundingPoly.size() == 4){
+                hulls.push_back(boundingPoly);
+                n++;
+            }
+        }
+        if(ntimes++ == 19){
+            vector<Point> boundingPoly;
+            vector<Point> r = getBoundingRectOfBoard(frame);
+            double perimeter_length = cv::arcLength(r,true);
+            approxPolyDP( r, boundingPoly, 0.01*perimeter_length, true );
+            hulls.push_back(boundingPoly);
         }
     }
     // of all the candidates for bounding rect get the one with max area
     int i =maxcontourarea(hulls);
-    
-    // approximate the contour with a polygon hopefully with 4 vertices
-    vector<Point> boundingPoly;
-    double perimeter_length = cv::arcLength(hulls[i],true);
-    cv:: approxPolyDP( hulls[i], boundingPoly, 0.01*perimeter_length, true );
-    
-
-    return boundingPoly;
+    return hulls[i];
 }

@@ -35,52 +35,48 @@ int main(int, char**)
 
 void loopForBoundingRect()
 {
-    VideoCapture cap(0);
-    if(!cap.isOpened())return;
+    VideoCapture videocam(0);
+    if(!videocam.isOpened())return;
    
     Mat map;
-    vector<Point> h;
-    bool nomap = true;
-    bool loop = true;
-    bool orient=false;
-    int delta = 25;
-    int boardsize = 19;
+    vector<Point> boundingPoly;
+    bool nomap = true, loop = true, orient=false;
+    int delta = 25, boardsize = 19, orientation= 2;
+    Scalar color(0,0,255);
     namedWindow( "warped",CV_WINDOW_AUTOSIZE);
     namedWindow( "Contours",CV_WINDOW_AUTOSIZE);
-    int orientation = 2;
-    Scalar color(0,0,255);
-
+    
+    // Loop forever capturing frames from camera
     for(;;){
-        
         Mat cframe;
-        cap >> cframe;
-        
+        videocam >> cframe;
+    
+        // Find bounding polygon of grid lines of board and
+        // find perspective transform that takes that polygon to a rectangle
         if(loop || nomap ){
             if(!orient){
-                h = tryToGetBoundingRectOfBoard(cap);
-//                Mat temp = cframe.clone();
-//                Mat temp2;
-//                map = getPerspectiveMap(temp.size(), h,orientation,0);
-//                warpPerspective(temp, temp2, map, temp.size());
-//                vector<Point> g = getBoundingRectOfBoard(temp2);
-//                
-//                Mat invmap = cv::getPerspectiveTransform(g,h);
-//                waitKey(0);
+                boundingPoly = tryToGetBoundingRectOfBoard(videocam);
             }
-            map = getPerspectiveMap(cframe.size(), h,orientation,delta);
+            vector<Point2f> src =srcRect(boundingPoly, orientation);
+            vector<Point2f> dst = destRect(cframe.size(), delta);
+            map =getPerspectiveTransform(src,dst);
+    
             nomap = false;
             orient=false;
         }
         
+        // Apply perspective transform to input image and get mappedImage
         Mat mappedImage = cframe.clone();
         warpPerspective(cframe, mappedImage, map, cframe.size());
         
-        drawpoly(cframe, h, color, 2);
+        // Draw the bounding polygon of grid lines on input image and show it
+        drawpoly(cframe, boundingPoly, color, 10);
         resize(cframe, cframe, Size(cframe.cols/2.5, cframe.rows/2.5));
         imshow( "Contours", cframe );
         moveWindow("Contours", 30, 30);
     
     
+        // Draw grid lines on transformed image and show it.
         drawgrid(mappedImage, delta, boardsize, Scalar(0,255,0), 3);
         resize(mappedImage, mappedImage, Size(mappedImage.cols/2.7, mappedImage.rows/2));
         imshow("warped", mappedImage);

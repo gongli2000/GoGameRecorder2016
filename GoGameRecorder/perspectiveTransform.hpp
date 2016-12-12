@@ -22,8 +22,8 @@ using namespace cv;
 vector<Point>  tryToGetBoundingRectOfBoard(VideoCapture& cap);
 vector<Point> getBoundingRectOfBoard(Mat &frame);
 Mat getPerspectiveMap(Size s, vector<cv::Point> &boardBoundingRect,int orientation,int dx);
-Mat getInvPerspectiveMap(Size s, vector<Point> &src, vector<Point> &dst, int orientation,int dx);
-
+vector<Point2f> destRect(Size s, int delta);
+vector<Point2f> srcRect(vector<Point>& r, int orientation);
 
 
 
