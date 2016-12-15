@@ -7,7 +7,7 @@
 
 #include "perspectiveTransform.hpp"
 #include "drawing.hpp"
-
+#include "io.hpp"
 using namespace cv;
 using namespace std;
 
@@ -17,7 +17,7 @@ int testContours( Mat& src );
 void capturecamera();
 void dothresh(Mat& src, int threshold);
 void capturecontours();
-Mat getoneframe();
+
 void findlargestcontour(Mat& src);
 int maxcontourarea(vector<vector<Point>> &contours);
 void loopForBoundingRect();
@@ -26,9 +26,15 @@ void blobdetector();
 
 int main(int, char**)
 {
-//    Mat src = imread("/Users/larry/sampleimages/lenna.png", 1);
-   loopForBoundingRectTutorial();
-//    blobdetector();
+   //    Mat src = imread("/Users/larry/sampleimages/lenna.png", 1);
+   
+    char key = '2';
+    switch(key){
+        case '1':loopForBoundingRect();break;
+        case '2':loopForBoundingRectTutorial();break;
+        case '3': saveCameraImage("/Users/larry/Desktop/image.png");break;
+    }
+    
     return 0;
 }
 
@@ -80,10 +86,15 @@ void loopForBoundingRect()
         drawpoly(cframe, boundingPoly, color, 10);
         
         // draw images
-        Mat hout;
+        Mat hout,hout2,blackmat,combinedImage;
+        blackmat = cframe.clone();
+        blackmat.setTo(Scalar(0,0,0));
         hconcat(cframe,mappedImage,hout);
-        resize(hout,hout,Size(hout.cols/2.8,hout.rows/2.5));
-        imshow("",hout);
+        hconcat(blackmat,blackmat,hout2);
+        vconcat(hout,hout2,combinedImage);
+        resize(combinedImage,combinedImage,
+               Size(combinedImage.cols/2.8,combinedImage.rows/2.5));
+        imshow("",combinedImage);
         
         
         switch(waitKey(1)){
@@ -101,9 +112,7 @@ void loopForBoundingRect()
 
 void loopForBoundingRectTutorial()
 {
-    VideoCapture videocam(0);
-    if(!videocam.isOpened())return;
-    
+  
     Mat map;
     vector<Point> boundingPoly;
     bool nomap = true, loop = true, orient=false;
@@ -113,8 +122,11 @@ void loopForBoundingRectTutorial()
     namedWindow( "Contours",CV_WINDOW_AUTOSIZE);
     
     // Loop forever capturing frames from camera
+    Mat cframe,vout,allcontours,contourImage;
+    VideoCapture videocam(0);
+    if(!videocam.isOpened())return;
+    
     for(;;){
-        Mat cframe;
         videocam >> cframe;
         
         // Find bounding polygon of grid lines of board and
@@ -122,7 +134,7 @@ void loopForBoundingRectTutorial()
         if(loop || nomap ){
             if(!orient){
                 boundingPoly = tryToGetBoundingRectOfBoard(videocam, 2,5);
-                //boundingPoly = getBoundingRectOfBoard(cframe);
+               // boundingPoly = getBoundingRectOfBoard(cframe);
             }
             if(boundingPoly.size() == 0) continue;
             vector<Point2f> src =srcRect(boundingPoly, orientation);
@@ -137,7 +149,7 @@ void loopForBoundingRectTutorial()
         Mat mappedImage = cframe.clone();
         warpPerspective(cframe, mappedImage, map, cframe.size());
         
-        Mat contourImage = cframe.clone();
+        contourImage = cframe.clone();
      
         // Draw the bounding polygon of grid lines on input image and show it
         drawpoly(cframe, boundingPoly, color, 10);
@@ -165,19 +177,24 @@ void loopForBoundingRectTutorial()
             }
             i++;
         }
+        
+    
+        
         drawContours(contourImage, contours, index, Scalar(0,0,255),10);
-        
-        Mat hout,hout2;
+        allcontours = cframe.clone();
+        drawContours(allcontours, contours, -1, Scalar(0,0,255),10);
+        Mat hout,hout2,black;
+        black = cframe.clone();
+        black.setTo(Scalar(0,0,0));
         cvtColor(canny_output,canny_output,COLOR_GRAY2BGR);
-        hconcat(cframe,mappedImage,hout);
-        hconcat(canny_output,contourImage,hout2);
+        hconcat(canny_output,allcontours,hout);
+        hconcat(hout,contourImage, hout);
+        hconcat(cframe,mappedImage,hout2);
+        hconcat(hout2,black,hout2);
         
-        Mat vout;
         vconcat(hout,hout2,vout);
         resize(vout,vout,Size(vout.cols/2.8,vout.rows/2.8));
         imshow("sdf",vout);
-        
-        
         switch(waitKey(1)){
             case 'c': nomap=true; break;
             case 'l': loop = !loop; break;
