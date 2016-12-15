@@ -88,9 +88,6 @@ vector<Point> getBoundingRectOfBoard(Mat &frame){
     // Get contours from edges
     findContours(canny_output,contours,hierarchy,CV_RETR_TREE,CV_CHAIN_APPROX_SIMPLE,Point(0,0));
  
-    resize(canny_output,canny_output,Size(500,500));
-    imshow("fdsfdsf",canny_output);
-
     // save the contour with max area as candidate for bounding rect
     int max_area_index = maxcontourarea(contours);
     convexHull( Mat(contours[max_area_index]), hull, false );
