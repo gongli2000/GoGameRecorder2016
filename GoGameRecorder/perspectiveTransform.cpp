@@ -87,8 +87,9 @@ vector<Point> getBoundingRectOfBoard(Mat &frame){
   
     // Get contours from edges
     findContours(canny_output,contours,hierarchy,CV_RETR_TREE,CV_CHAIN_APPROX_SIMPLE,Point(0,0));
-
-
+ 
+    resize(canny_output,canny_output,Size(500,500));
+    imshow("fdsfdsf",canny_output);
 
     // save the contour with max area as candidate for bounding rect
     int max_area_index = maxcontourarea(contours);
@@ -96,15 +97,14 @@ vector<Point> getBoundingRectOfBoard(Mat &frame){
     return hull;
 }
 
-vector<Point>  tryToGetBoundingRectOfBoard(VideoCapture& cap){
-    int ntries = 2;
+vector<Point>  tryToGetBoundingRectOfBoard(VideoCapture& cap,int ntries, int maxtimes){
     vector<vector<Point>>  hulls;
     vector<Point> boundingPoly;
     Mat frame;
     // Try to find bounding rect contour ntries times
     // return the contour
     int n=0,ntimes=0;
-    while(n < ntries && (ntimes < 20)){
+    while(n < ntries && (ntimes < maxtimes)){
         if(cap.read(frame)){
             vector<Point> boundingPoly;
             vector<Point> r = getBoundingRectOfBoard(frame);
@@ -115,15 +115,13 @@ vector<Point>  tryToGetBoundingRectOfBoard(VideoCapture& cap){
                 n++;
             }
         }
-        if(ntimes++ == 19){
-            vector<Point> boundingPoly;
-            vector<Point> r = getBoundingRectOfBoard(frame);
-            double perimeter_length = cv::arcLength(r,true);
-            approxPolyDP( r, boundingPoly, 0.01*perimeter_length, true );
-            hulls.push_back(boundingPoly);
-        }
+
     }
     // of all the candidates for bounding rect get the one with max area
-    int i =maxcontourarea(hulls);
-    return hulls[i];
+    if(hulls.size() > 0){
+        int i =maxcontourarea(hulls);
+        return hulls[i];
+    }else{
+        return vector<Point>();
+    }
 }

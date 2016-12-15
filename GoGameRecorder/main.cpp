@@ -55,8 +55,9 @@ void loopForBoundingRect()
         // find perspective transform that takes that polygon to a rectangle
         if(loop || nomap ){
             if(!orient){
-                boundingPoly = tryToGetBoundingRectOfBoard(videocam);
+                boundingPoly = tryToGetBoundingRectOfBoard(videocam, 2,5);
             }
+            if(boundingPoly.size() == 0) continue;
             vector<Point2f> src =srcRect(boundingPoly, orientation);
             vector<Point2f> dst = destRect(cframe.size(), delta);
             map =getPerspectiveTransform(src,dst);
