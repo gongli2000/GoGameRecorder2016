@@ -56,6 +56,7 @@ void loopForBoundingRect()
         if(loop || nomap ){
             if(!orient){
                 boundingPoly = tryToGetBoundingRectOfBoard(videocam, 2,5);
+                //boundingPoly = getBoundingRectOfBoard(cframe);
             }
             if(boundingPoly.size() == 0) continue;
             vector<Point2f> src =srcRect(boundingPoly, orientation);
@@ -72,16 +73,29 @@ void loopForBoundingRect()
         
         // Draw the bounding polygon of grid lines on input image and show it
         drawpoly(cframe, boundingPoly, color, 10);
-        resize(cframe, cframe, Size(cframe.cols/2.5, cframe.rows/2.5));
-        imshow( "Contours", cframe );
-        moveWindow("Contours", 30, 30);
-    
-    
+
         // Draw grid lines on transformed image and show it.
         drawgrid(mappedImage, delta, boardsize, Scalar(0,255,0), 3);
-        resize(mappedImage, mappedImage, Size(mappedImage.cols/2.7, mappedImage.rows/2));
-        imshow("warped", mappedImage);
-        moveWindow("warped",100 + cframe.cols, 30);
+
+        
+        // Find edges of blurred black and white image
+        Mat edges,canny_output;
+        cvtColor(cframe, edges, COLOR_BGR2GRAY);
+        GaussianBlur(edges, edges, Size(11,11), 1.5, 1.5);
+        Canny(edges, canny_output, 0, 30, 3);
+        
+        cvtColor(canny_output,canny_output,COLOR_GRAY2BGR);
+        vector<Mat> images = {cframe,mappedImage,canny_output};
+        Mat hout,hout2;
+        Mat contours = cframe.clone();
+        
+        hconcat(cframe,mappedImage,hout);
+        hconcat(canny_output,contours,hout2);
+        
+        Mat vout;
+        vconcat(hout,hout2,vout);
+        resize(vout,vout,Size(vout.cols/2.8,vout.rows/2.8));
+        imshow("sdf",vout);
         
         
         switch(waitKey(1)){
