@@ -26,6 +26,7 @@ void loopForBoundingRectTutorial();
 void blobdetector();
 void Get_Threshold_Values();
 void hsvviewer();
+int viewer2();
 
 int main(int, char**)
 {
@@ -38,6 +39,7 @@ int main(int, char**)
         case '3': saveCameraImage("/Users/larry/Desktop/image.png");break;
         case '4': Get_Threshold_Values();break;
         case '5': hsvviewer();break;
+        case '6': viewer2();break;
     }
     
     return 0;

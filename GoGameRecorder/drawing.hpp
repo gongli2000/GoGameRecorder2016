@@ -19,6 +19,8 @@
 using namespace std;
 using namespace cv;
 
+Mat concatMats(vector<vector<Mat>> &images,int width, int height);
+
 void drawgrid(Mat &img, int delta, int boardsize, Scalar color, int thickness );
 
 void drawpoly(Mat& inputImage, vector<Point> &r, Scalar color, int thickness);

@@ -24,6 +24,6 @@ using namespace cv;
 using namespace std;
 
 void hsvviewer();
-
+int viewer2();
 
 #endif /* hsvviewer_hpp */
