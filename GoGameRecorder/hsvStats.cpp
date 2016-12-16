@@ -18,7 +18,7 @@ void getHSVstats(){
 }
 
 
-void plothistogram(string windowname,Mat& hist,int histsize){
+Mat  plothistogram(Mat& hist,int histsize){
     // Plot the histogram
     int hist_w = 512; int hist_h = 400;
     int bin_w = cvRound( (double) hist_w/histsize );
@@ -32,10 +32,7 @@ void plothistogram(string windowname,Mat& hist,int histsize){
              Point( bin_w*(i), hist_h - cvRound(hist.at<float>(i)) ),
              Scalar( 255, 0, 0), 2, 8, 0  );
     }
-    
-    namedWindow( windowname, 1 );
-    resize(histImage,histImage,Size(300,300));
-    imshow( windowname, histImage );
+    return histImage;
 }
 
 void Get_Threshold_Values()
@@ -61,12 +58,12 @@ void Get_Threshold_Values()
     vector<Mat> images = {gray};
     
     for(int i =0;i<3;i++){
-        Mat hist;
+        Mat hist, histout;
         vector<int> channels = {i};
         calcHist(images,channels,Mat(),hist,histSize,ranges);
         char s[256];
         sprintf(s, "histogram_%d", i);
-        plothistogram(s,hist,histSize[0]);
+        histout = plothistogram(hist,histSize[0]);
     }
     resize(gray,gray,Size(300,300));
     imshow( "Gray", gray );

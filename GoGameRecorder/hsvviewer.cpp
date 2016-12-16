@@ -41,15 +41,9 @@ void hsvviewer()
         color_hsv =cframe.clone();
         color_hsv.setTo(Scalar(h_,s_,v_));
         cv::cvtColor(color_hsv, color_img, CV_HSV2BGR);
-        
-//        Mat out;
-//        hconcat(color_img,cframe,out);
-//        resize(out,out,Size(1000 ,600));
-        
-        vector<Mat> row1 ={color_img,cframe};
-        vector<Mat> row2 ={color_img,cframe};
-        vector<vector<Mat>> images={row1,row2};
-        Mat out= concatMats(images,300,300);
+
+        vector<Mat> images={color_img,color_img,cframe};
+        Mat out= concatMats2(images,2,2,300,300);
         cv::imshow("fdfd", out);
         
         

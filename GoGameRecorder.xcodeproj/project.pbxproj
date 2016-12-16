@@ -142,19 +142,14 @@
 		463FC6811DF8607700285030 /* GoGameRecorder */ = {
 			isa = PBXGroup;
 			children = (
-				46A94FCC1E03B8E0001A5A36 /* hsvviewer.hpp */,
-				46A94FCD1E03B8E0001A5A36 /* hsvviewer.cpp */,
 				460C8E161DFE5B680016DC84 /* main.cpp */,
+				46A94FCD1E03B8E0001A5A36 /* hsvviewer.cpp */,
 				46A94FC61E031E3E001A5A36 /* io.cpp */,
-				46A94FC71E031E3E001A5A36 /* io.hpp */,
 				460C8E171DFE5B680016DC84 /* perspectiveTransform.cpp */,
-				460C8E181DFE5B680016DC84 /* perspectiveTransform.hpp */,
 				460C8E191DFE5B680016DC84 /* drawing.cpp */,
-				460C8E1A1DFE5B680016DC84 /* drawing.hpp */,
-				460C8E1B1DFE5B680016DC84 /* tests.cpp */,
-				460C8E201DFE5B8E0016DC84 /* tests.hpp */,
 				46A94FC91E0344CB001A5A36 /* hsvStats.cpp */,
-				46A94FCA1E0344CB001A5A36 /* hsvStats.hpp */,
+				460C8E1B1DFE5B680016DC84 /* tests.cpp */,
+				46A94FCF1E046B6D001A5A36 /* headers */,
 			);
 			path = GoGameRecorder;
 			sourceTree = "<group>";
@@ -186,6 +181,19 @@
 				463FC69E1DF8635500285030 /* libopencv_videostab.2.4.13.dylib */,
 			);
 			name = opencvlibs;
+			sourceTree = "<group>";
+		};
+		46A94FCF1E046B6D001A5A36 /* headers */ = {
+			isa = PBXGroup;
+			children = (
+				460C8E1A1DFE5B680016DC84 /* drawing.hpp */,
+				46A94FCA1E0344CB001A5A36 /* hsvStats.hpp */,
+				460C8E181DFE5B680016DC84 /* perspectiveTransform.hpp */,
+				46A94FC71E031E3E001A5A36 /* io.hpp */,
+				46A94FCC1E03B8E0001A5A36 /* hsvviewer.hpp */,
+				460C8E201DFE5B8E0016DC84 /* tests.hpp */,
+			);
+			name = headers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
