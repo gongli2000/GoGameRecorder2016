@@ -35,6 +35,7 @@
 		463FC6B41DF8635500285030 /* libopencv_videostab.2.4.13.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 463FC69E1DF8635500285030 /* libopencv_videostab.2.4.13.dylib */; };
 		46A94FC81E031E3E001A5A36 /* io.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46A94FC61E031E3E001A5A36 /* io.cpp */; };
 		46A94FCB1E0344CB001A5A36 /* hsvStats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46A94FC91E0344CB001A5A36 /* hsvStats.cpp */; };
+		46A94FCE1E03B8E0001A5A36 /* hsvviewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46A94FCD1E03B8E0001A5A36 /* hsvviewer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -84,6 +85,8 @@
 		46A94FC71E031E3E001A5A36 /* io.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = io.hpp; sourceTree = "<group>"; };
 		46A94FC91E0344CB001A5A36 /* hsvStats.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hsvStats.cpp; sourceTree = "<group>"; };
 		46A94FCA1E0344CB001A5A36 /* hsvStats.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = hsvStats.hpp; sourceTree = "<group>"; };
+		46A94FCC1E03B8E0001A5A36 /* hsvviewer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = hsvviewer.hpp; sourceTree = "<group>"; };
+		46A94FCD1E03B8E0001A5A36 /* hsvviewer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hsvviewer.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +142,8 @@
 		463FC6811DF8607700285030 /* GoGameRecorder */ = {
 			isa = PBXGroup;
 			children = (
+				46A94FCC1E03B8E0001A5A36 /* hsvviewer.hpp */,
+				46A94FCD1E03B8E0001A5A36 /* hsvviewer.cpp */,
 				460C8E161DFE5B680016DC84 /* main.cpp */,
 				46A94FC61E031E3E001A5A36 /* io.cpp */,
 				46A94FC71E031E3E001A5A36 /* io.hpp */,
@@ -243,6 +248,7 @@
 			files = (
 				46A94FC81E031E3E001A5A36 /* io.cpp in Sources */,
 				460C8E1C1DFE5B680016DC84 /* main.cpp in Sources */,
+				46A94FCE1E03B8E0001A5A36 /* hsvviewer.cpp in Sources */,
 				460C8E1F1DFE5B680016DC84 /* tests.cpp in Sources */,
 				46A94FCB1E0344CB001A5A36 /* hsvStats.cpp in Sources */,
 				460C8E1E1DFE5B680016DC84 /* drawing.cpp in Sources */,

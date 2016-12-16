@@ -25,17 +25,19 @@ void loopForBoundingRect();
 void loopForBoundingRectTutorial();
 void blobdetector();
 void Get_Threshold_Values();
+void hsvviewer();
 
 int main(int, char**)
 {
    //    Mat src = imread("/Users/larry/sampleimages/lenna.png", 1);
    
-    char key = '4';
+    char key = '5';
     switch(key){
         case '1':loopForBoundingRect();break;
         case '2':loopForBoundingRectTutorial();break;
         case '3': saveCameraImage("/Users/larry/Desktop/image.png");break;
-        case '4': Get_Threshold_Values();
+        case '4': Get_Threshold_Values();break;
+        case '5': hsvviewer();break;
     }
     
     return 0;
