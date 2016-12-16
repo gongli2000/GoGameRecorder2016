@@ -11,6 +11,7 @@
 using namespace cv;
 using namespace std;
 
+void Get_Threshold_Values(Mat& image);
 
 void thresh_callback(int, void* );
 int testContours( Mat& src );
@@ -23,16 +24,18 @@ int maxcontourarea(vector<vector<Point>> &contours);
 void loopForBoundingRect();
 void loopForBoundingRectTutorial();
 void blobdetector();
+void Get_Threshold_Values();
 
 int main(int, char**)
 {
    //    Mat src = imread("/Users/larry/sampleimages/lenna.png", 1);
    
-    char key = '2';
+    char key = '4';
     switch(key){
         case '1':loopForBoundingRect();break;
         case '2':loopForBoundingRectTutorial();break;
         case '3': saveCameraImage("/Users/larry/Desktop/image.png");break;
+        case '4': Get_Threshold_Values();
     }
     
     return 0;
@@ -193,7 +196,7 @@ void loopForBoundingRectTutorial()
         hconcat(hout2,black,hout2);
         
         vconcat(hout,hout2,vout);
-        resize(vout,vout,Size(vout.cols/2.8,vout.rows/2.8));
+        resize(vout,vout,Size(vout.cols/3.0,vout.rows/2.8));
         imshow("sdf",vout);
         switch(waitKey(1)){
             case 'c': nomap=true; break;

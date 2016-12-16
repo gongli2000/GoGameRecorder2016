@@ -34,6 +34,7 @@
 		463FC6B31DF8635500285030 /* libopencv_video.2.4.13.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 463FC69D1DF8635500285030 /* libopencv_video.2.4.13.dylib */; };
 		463FC6B41DF8635500285030 /* libopencv_videostab.2.4.13.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 463FC69E1DF8635500285030 /* libopencv_videostab.2.4.13.dylib */; };
 		46A94FC81E031E3E001A5A36 /* io.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46A94FC61E031E3E001A5A36 /* io.cpp */; };
+		46A94FCB1E0344CB001A5A36 /* hsvStats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46A94FC91E0344CB001A5A36 /* hsvStats.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -81,6 +82,8 @@
 		463FC69E1DF8635500285030 /* libopencv_videostab.2.4.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopencv_videostab.2.4.13.dylib; path = /usr/local/Cellar/opencv/2.4.13.1/lib/libopencv_videostab.2.4.13.dylib; sourceTree = "<absolute>"; };
 		46A94FC61E031E3E001A5A36 /* io.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = io.cpp; sourceTree = "<group>"; };
 		46A94FC71E031E3E001A5A36 /* io.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = io.hpp; sourceTree = "<group>"; };
+		46A94FC91E0344CB001A5A36 /* hsvStats.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = hsvStats.cpp; sourceTree = "<group>"; };
+		46A94FCA1E0344CB001A5A36 /* hsvStats.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = hsvStats.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -145,6 +148,8 @@
 				460C8E1A1DFE5B680016DC84 /* drawing.hpp */,
 				460C8E1B1DFE5B680016DC84 /* tests.cpp */,
 				460C8E201DFE5B8E0016DC84 /* tests.hpp */,
+				46A94FC91E0344CB001A5A36 /* hsvStats.cpp */,
+				46A94FCA1E0344CB001A5A36 /* hsvStats.hpp */,
 			);
 			path = GoGameRecorder;
 			sourceTree = "<group>";
@@ -239,6 +244,7 @@
 				46A94FC81E031E3E001A5A36 /* io.cpp in Sources */,
 				460C8E1C1DFE5B680016DC84 /* main.cpp in Sources */,
 				460C8E1F1DFE5B680016DC84 /* tests.cpp in Sources */,
+				46A94FCB1E0344CB001A5A36 /* hsvStats.cpp in Sources */,
 				460C8E1E1DFE5B680016DC84 /* drawing.cpp in Sources */,
 				460C8E1D1DFE5B680016DC84 /* perspectiveTransform.cpp in Sources */,
 			);
