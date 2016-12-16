@@ -31,7 +31,7 @@ void drawpoly(Mat& inputImage, vector<Point> &r, Scalar color, int thickness){
     
 }
 
-Mat concatMats2(vector<Mat> &images,int nrows,int ncols,int width, int height)
+Mat concatMats(vector<Mat> &images,int nrows,int ncols,int width, int height)
 {
     Mat hout,vout;
     unsigned long
@@ -62,28 +62,6 @@ Mat concatMats2(vector<Mat> &images,int nrows,int ncols,int width, int height)
     return vout;
 }
 
-Mat concatMats(vector<vector<Mat>> &images,int width, int height)
-{
-    Mat hout,vout;
-    int k = 0;
-    for(auto &imagevec : images){
-        int i = 0;
-        for(auto &image : imagevec){
-            resize(image,image,Size(width,height));
-            if(i++ == 0){
-                hout = image.clone();
-            }else{
-                hconcat(hout,image,hout);
-            }
-        }
-        if(k++ ==0){
-            vout = hout.clone();
-        }else{
-            vconcat(vout,hout,vout);
-        }
-    }
-    return vout;
-}
 
 
 

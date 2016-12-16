@@ -31,9 +31,6 @@ void hsvviewer()
     VideoCapture videocam(0);
     if(!videocam.isOpened())return;
     
-   
-    
-        
     while(true) {
         Mat cframe;
         videocam >> cframe;
@@ -42,9 +39,9 @@ void hsvviewer()
         color_hsv.setTo(Scalar(h_,s_,v_));
         cv::cvtColor(color_hsv, color_img, CV_HSV2BGR);
 
-        vector<Mat> images={color_img,color_img,cframe};
-        Mat out= concatMats2(images,2,2,300,300);
-        cv::imshow("fdfd", out);
+        vector<Mat> images={color_img,color_img,cframe,cframe,cframe};
+        Mat out= concatMats(images,2,3,300,300);
+        cv::imshow(window_name, out);
         
         
         int c = cv::waitKey(10);

@@ -7,7 +7,7 @@
 //
 
 #include "hsvStats.hpp"
-
+#include "drawing.hpp"
 
 void getHSVstats(){
     VideoCapture videocam(0);
@@ -40,34 +40,30 @@ void Get_Threshold_Values()
     VideoCapture videocam(0);
     if(!videocam.isOpened())return;
     
-    for(;;){
-    Mat gray;
-    videocam >> gray;
-    namedWindow( "Gray", 1 );
-  
-    cvtColor(gray, gray, CV_BGR2HSV);
-   
-    
-    // Initialize parameters
-    vector<int> histSize = {256};    // bin size
-    vector<float> range = { 0.0, 255.0 };
-    vector<float> ranges = {  0.0, 255.0  };
-    
-    // Calculate histogram
-   
-    vector<Mat> images = {gray};
-    
-    for(int i =0;i<3;i++){
-        Mat hist, histout;
-        vector<int> channels = {i};
-        calcHist(images,channels,Mat(),hist,histSize,ranges);
-        char s[256];
-        sprintf(s, "histogram_%d", i);
-        histout = plothistogram(hist,histSize[0]);
+    for(;;)
+    {
+        Mat gray;
+        videocam >> gray;
+        namedWindow( "Gray", 1 );
+      
+        cvtColor(gray, gray, CV_BGR2HSV);
+        vector<int> histSize = {256};    // bin size
+        vector<float> range = { 0.0, 255.0 };
+        vector<float> ranges = {  0.0, 255.0  };
+        
+
+        vector<Mat> inputimage = {gray},images;
+        for(int i =0;i<3;i++){
+            Mat hist, histout;
+            vector<int> channels = {i};
+            calcHist(inputimage,channels,Mat(),hist,histSize,ranges);
+            histout =plothistogram(hist,histSize[0]);
+            cvtColor(histout,histout,CV_GRAY2BGR);
+            images.push_back(histout);
+        }
+        images.push_back(gray);
+        Mat out =concatMats(images, 2, 3, 300, 300);
+        imshow( "Gray", out );
+        waitKey(1);
     }
-    resize(gray,gray,Size(300,300));
-    imshow( "Gray", gray );
-     waitKey(1);
-    }
-   
 }

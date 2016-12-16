@@ -32,7 +32,7 @@ int main(int, char**)
 {
    //    Mat src = imread("/Users/larry/sampleimages/lenna.png", 1);
    
-    char key = '5';
+    char key = '4';
     switch(key){
         case '1':loopForBoundingRect();break;
         case '2':loopForBoundingRectTutorial();break;
