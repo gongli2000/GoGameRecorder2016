@@ -144,10 +144,10 @@
 			children = (
 				460C8E161DFE5B680016DC84 /* main.cpp */,
 				46A94FCD1E03B8E0001A5A36 /* hsvviewer.cpp */,
-				46A94FC61E031E3E001A5A36 /* io.cpp */,
+				46A94FC91E0344CB001A5A36 /* hsvStats.cpp */,
 				460C8E171DFE5B680016DC84 /* perspectiveTransform.cpp */,
 				460C8E191DFE5B680016DC84 /* drawing.cpp */,
-				46A94FC91E0344CB001A5A36 /* hsvStats.cpp */,
+				46A94FC61E031E3E001A5A36 /* io.cpp */,
 				460C8E1B1DFE5B680016DC84 /* tests.cpp */,
 				46A94FCF1E046B6D001A5A36 /* headers */,
 			);

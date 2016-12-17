@@ -53,6 +53,11 @@ void Get_Threshold_Values()
         
 
         vector<Mat> inputimage = {gray},images;
+        Scalar means,stddev;
+        meanStdDev(gray, means,stddev);
+        printf("h,s,v means %f.2,%f.2 %f.2\n",means[0],means[1],means[2]);
+        printf("h,s,v std %f.2,%f.2 %f.2\n\n",stddev[0],stddev[1],stddev[2]);
+        
         for(int i =0;i<3;i++){
             Mat hist, histout;
             vector<int> channels = {i};
@@ -62,6 +67,12 @@ void Get_Threshold_Values()
             images.push_back(histout);
         }
         images.push_back(gray);
+        
+        Mat threshold_frame;
+        inRange(gray, Scalar(220/2, 0, 0), Scalar(260/2, 255, 255), threshold_frame);
+        cvtColor(threshold_frame,threshold_frame,CV_GRAY2BGR);
+        images.push_back(threshold_frame);
+        
         Mat out =concatMats(images, 2, 3, 300, 300);
         imshow( "Gray", out );
         waitKey(1);
