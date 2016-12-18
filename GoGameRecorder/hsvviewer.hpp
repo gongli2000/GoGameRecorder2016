@@ -23,7 +23,7 @@
 using namespace cv;
 using namespace std;
 
-void hsvviewer();
-int viewer2();
+void hsvviewer(VideoCapture& cam);
+int viewer2(VideoCapture& cam);
 
 #endif /* hsvviewer_hpp */

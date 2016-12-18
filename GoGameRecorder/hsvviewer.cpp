@@ -18,7 +18,7 @@ int v_ = 255; // V : 0～255, Brightness Value, 明度 (0に近づくほど黒�
 //    printf(  "H %d\n", h_);
 //    
 //}
-void hsvviewer()
+void hsvviewer(VideoCapture &cam)
 {
     Mat color_img, color_hsv;
     
@@ -28,12 +28,10 @@ void hsvviewer()
     createTrackbar("H", window_name, &h_, 255);//, on_trackbar);
     createTrackbar("S", window_name, &s_, 255);//, on_trackbar);
     createTrackbar("V", window_name, &v_, 255);//, on_trackbar);
-    VideoCapture videocam(0);
-    if(!videocam.isOpened())return;
-    
+
     while(true) {
         Mat cframe;
-        videocam >> cframe;
+        cam >> cframe;
         cvtColor(cframe,cframe,CV_RGB2HSV);
         color_hsv =cframe.clone();
         color_hsv.setTo(Scalar(h_,s_,v_));
@@ -45,7 +43,10 @@ void hsvviewer()
         
         
         int c = cv::waitKey(10);
-        if (c == 'q') break;
+        if (c == 'q') {
+            destroyWindow(window_name);
+            break;
+        }
     }
 
 }
@@ -54,16 +55,9 @@ void hsvviewer()
 
 
 
-int viewer2()
+int viewer2(VideoCapture& cap)
 {
-    VideoCapture cap(0); //capture the video from web cam
-    
-    if ( !cap.isOpened() )  // if not success, exit program
-    {
-        cout << "Cannot open the web cam" << endl;
-        return -1;
-    }
-    
+
     namedWindow("Control", CV_WINDOW_AUTOSIZE); //create a window called "Control"
     
     int iLowH = 0;
@@ -116,9 +110,10 @@ int viewer2()
         imshow("Thresholded Image", imgThresholded); //show the thresholded image
         imshow("Original", imgOriginal); //show the original image
         
-        if (waitKey(30) == 27) //wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
+        if (waitKey(30) == 'q') //wait for 'esc' key press for 30ms. If 'esc' key is pressed, break loop
         {
-            cout << "esc key is pressed by user" << endl;
+            destroyWindow("Thresholded Image");
+            destroyWindow("Original");
             break; 
         }
     }

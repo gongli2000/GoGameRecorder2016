@@ -9,11 +9,8 @@
 #include "io.hpp"
 
 
-void saveCameraImage(string filename){
-    
-    VideoCapture videocam(0);
-    if(!videocam.isOpened())return;
-    
+void saveCameraImage(VideoCapture& videocam,string filename){
+
     Mat cframe;
     videocam >> cframe;
     imwrite(filename,cframe);

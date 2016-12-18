@@ -8,6 +8,7 @@
 #include "perspectiveTransform.hpp"
 #include "drawing.hpp"
 #include "hsvStats.hpp"
+#include "hsvviewer.hpp"
 #include "io.hpp"
 using namespace cv;
 using namespace std;
@@ -22,12 +23,12 @@ void capturecontours();
 
 void findlargestcontour(Mat& src);
 int maxcontourarea(vector<vector<Point>> &contours);
-void loopForBoundingRect();
-void loopForBoundingRectTutorial();
+void loopForBoundingRect(VideoCapture &cam);
+void loopForBoundingRectTutorial(VideoCapture& cam);
 void blobdetector();
 
-void hsvviewer();
-int viewer2();
+
+
 
 int main(int, char**)
 {
@@ -49,25 +50,24 @@ int main(int, char**)
     for(;;){
       
         switch(key){
-            case '1':loopForBoundingRect();break;
-            case '2':loopForBoundingRectTutorial();break;
-            case '3': saveCameraImage("/Users/larry/Desktop/image.png");break;
+            case '1':loopForBoundingRect(cap);break;
+            case '2':loopForBoundingRectTutorial(cap);break;
+            case '3': saveCameraImage(cap,"/Users/larry/Desktop/image.png");break;
             case '4': Get_Threshold_Values(cap);break;
-            case '5': hsvviewer();break;
-            case '6': viewer2();break;
+            case '5': hsvviewer(cap);break;
+            case '6': viewer2(cap);break;
             case 'q': break;
         }
         key = waitKey(1);
+        if(key == 'q')break;
     }
     return 0;
 }
 
 
 
-void loopForBoundingRect()
+void loopForBoundingRect(VideoCapture &videocam)
 {
-    VideoCapture videocam(0);
-    if(!videocam.isOpened())return;
    
     Mat map;
     vector<Point> boundingPoly;
@@ -118,7 +118,7 @@ void loopForBoundingRect()
         vconcat(hout,hout2,combinedImage);
         resize(combinedImage,combinedImage,
                Size(combinedImage.cols/2.8,combinedImage.rows/2.5));
-        imshow("",combinedImage);
+        imshow("combined",combinedImage);
         
         
         switch(waitKey(1)){
@@ -128,13 +128,13 @@ void loopForBoundingRect()
             case '2': orientation = 1;orient=true;nomap=true;break;
             case '3': orientation = 2;orient=true;nomap=true;break;
             case '4': orientation = 3;orient=true;nomap=true;break;
-                
+            case 'q': destroyWindow("combined");return;
         }
         
     }
 }
 
-void loopForBoundingRectTutorial()
+void loopForBoundingRectTutorial(VideoCapture& videocam)
 {
   
     Mat map;
@@ -147,9 +147,7 @@ void loopForBoundingRectTutorial()
     
     // Loop forever capturing frames from camera
     Mat cframe,vout,allcontours,contourImage;
-    VideoCapture videocam(0);
-    if(!videocam.isOpened())return;
-    
+
     for(;;){
         videocam >> cframe;
         
@@ -226,6 +224,7 @@ void loopForBoundingRectTutorial()
             case '2': orientation = 1;orient=true;nomap=true;break;
             case '3': orientation = 2;orient=true;nomap=true;break;
             case '4': orientation = 3;orient=true;nomap=true;break;
+            case 'q' : destroyWindow("sdf");return;
                 
         }
         
