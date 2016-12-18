@@ -35,11 +35,9 @@ Mat  plothistogram(Mat& hist,int histsize){
     return histImage;
 }
 
-void Get_Threshold_Values()
+void Get_Threshold_Values(VideoCapture &videocam)
 {
-    VideoCapture videocam(0);
-    if(!videocam.isOpened())return;
-    
+
     for(;;)
     {
         Mat gray,savegray;
@@ -69,35 +67,40 @@ void Get_Threshold_Values()
             cvtColor(histout,histout,CV_GRAY2BGR);
             images.push_back(histout);
         }
-       
-       
-        
         Mat threshold_frame;
         double delta = 20;
         Scalar minmeans = means - Scalar(delta,delta,delta);
         Scalar maxmeans = means + Scalar(delta,delta,delta);
-
-        minmeans = Scalar(0,0,-20);
-        maxmeans = Scalar(255,255,60);
+        
+//        minmeans = Scalar(0,0,-20);
+//        maxmeans = Scalar(255,255,60);
         inRange(gray, minmeans, maxmeans, threshold_frame);
         cvtColor(threshold_frame,threshold_frame,CV_GRAY2BGR);
         
+     
         sprintf(minmean,"min %.2f,  %.2f, %.2f\n",
                 minmeans[0],minmeans[1],minmeans[2]);
-        sprintf(maxmean,"max %.2f, %.2f , %.2f\n\n",maxmeans[0],maxmeans[1],maxmeans[2]);
+        sprintf(maxmean,"max %.2f, %.2f , %.2f\n\n",
+                maxmeans[0],maxmeans[1],maxmeans[2]);
         
         putText(blankimage, minmean, Point(50,100),FONT_HERSHEY_PLAIN, 4,
             Scalar(0,0,255), 3, 3);
         putText(blankimage, maxmean, Point(50,200),FONT_HERSHEY_PLAIN, 4,
                 Scalar(0,0,255), 3, 3);
         printf("%.2f, %.2f, %.f\n",minmeans[0],minmeans[1],minmeans[2]);
-          printf("%.2f, %.2f, %.f\n\n",maxmeans[0],maxmeans[1],maxmeans[2]);
+        printf("%.2f, %.2f, %.f\n\n",maxmeans[0],maxmeans[1],maxmeans[2]);
         
-         images.push_back(savegray);
+        images.push_back(savegray);
         images.push_back(threshold_frame);
         images.push_back(blankimage);
         Mat out =concatMats(images, 2, 3, 300, 300);
         imshow( "Gray", out );
-        waitKey(1);
+        char c = waitKey(1);
+        if(c =='q'){
+            destroyWindow("Gray");
+            waitKey(1);
+            break;
+        }
+   
     }
 }

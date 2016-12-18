@@ -7,11 +7,12 @@
 
 #include "perspectiveTransform.hpp"
 #include "drawing.hpp"
+#include "hsvStats.hpp"
 #include "io.hpp"
 using namespace cv;
 using namespace std;
 
-void Get_Threshold_Values(Mat& image);
+
 
 void thresh_callback(int, void* );
 int testContours( Mat& src );
@@ -24,24 +25,40 @@ int maxcontourarea(vector<vector<Point>> &contours);
 void loopForBoundingRect();
 void loopForBoundingRectTutorial();
 void blobdetector();
-void Get_Threshold_Values();
+
 void hsvviewer();
 int viewer2();
 
 int main(int, char**)
 {
    //    Mat src = imread("/Users/larry/sampleimages/lenna.png", 1);
-   
-    char key = '4';
-    switch(key){
-        case '1':loopForBoundingRect();break;
-        case '2':loopForBoundingRectTutorial();break;
-        case '3': saveCameraImage("/Users/larry/Desktop/image.png");break;
-        case '4': Get_Threshold_Values();break;
-        case '5': hsvviewer();break;
-        case '6': viewer2();break;
-    }
     
+    VideoCapture cap(0); //capture the video from web cam
+    
+    if ( !cap.isOpened() )  // if not success, exit program
+    {
+        cout << "Cannot open the web cam" << endl;
+        return -1;
+    }
+    Mat image;
+    cap.read(image);
+    imshow("dfd",image);
+  
+    
+    char key = waitKey(0);
+    for(;;){
+      
+        switch(key){
+            case '1':loopForBoundingRect();break;
+            case '2':loopForBoundingRectTutorial();break;
+            case '3': saveCameraImage("/Users/larry/Desktop/image.png");break;
+            case '4': Get_Threshold_Values(cap);break;
+            case '5': hsvviewer();break;
+            case '6': viewer2();break;
+            case 'q': break;
+        }
+        key = waitKey(1);
+    }
     return 0;
 }
 

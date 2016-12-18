@@ -19,4 +19,6 @@ using namespace std;
 using namespace cv;
 
 
+void Get_Threshold_Values(VideoCapture &cap);
+
 #endif /* hsvStats_hpp */
