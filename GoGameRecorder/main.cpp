@@ -41,10 +41,26 @@ int main(int, char**)
         cout << "Cannot open the web cam" << endl;
         return -1;
     }
-    Mat image;
-    cap.read(image);
-    imshow("dfd",image);
-  
+    
+    Mat mainWindow(400, 600, CV_8UC3, Scalar(0, 0, 0));
+    auto font =FONT_HERSHEY_PLAIN;
+    auto color = Scalar(0,0,255);
+    int fscale = 2, width = 2,ltype = 8;
+    int row = 30, delta = 30;
+    vector<string> items = {
+        "1 Board Rect Calibration Loop",
+        "2 Calibration Tutorial",
+        "3 Save Camera Image",
+        "4 Get Threshold Values",
+        "5 HSV Viewer",
+        "6 HSV Statistics",
+        "q Quit"};
+    for(string item : items){
+       putText(mainWindow,item, Point(20,row),font,fscale,color, width, ltype);
+        row += delta;
+    }
+    
+    imshow("Menu",mainWindow);
     
     char key = waitKey(0);
     for(;;){

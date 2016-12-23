@@ -101,7 +101,7 @@ vector<Point>  tryToGetBoundingRectOfBoard(VideoCapture& cap,int ntries, int max
     // Try to find bounding rect contour ntries times
     // return the contour
     int n=0,ntimes=0;
-    while(n < ntries && (ntimes < maxtimes)){
+    while(n < ntries && (ntimes++ < maxtimes)){
         if(cap.read(frame)){
             vector<Point> boundingPoly;
             vector<Point> r = getBoundingRectOfBoard(frame);
