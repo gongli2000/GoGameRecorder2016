@@ -62,7 +62,8 @@ int main(int, char**)
     
     imshow("Menu",mainWindow);
     
-    char key = waitKey(0);
+    //char key = waitKey(0);
+    char key = '4';
     for(;;){
       
         switch(key){

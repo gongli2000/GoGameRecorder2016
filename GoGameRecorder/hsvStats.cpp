@@ -9,6 +9,9 @@
 #include "hsvStats.hpp"
 #include "drawing.hpp"
 
+#define dr 7
+int savex=-1,savey=-1;
+
 void getHSVstats(){
     VideoCapture videocam(0);
     if(!videocam.isOpened())return;
@@ -35,8 +38,37 @@ Mat  plothistogram(Mat& hist,int histsize){
     return histImage;
 }
 
+
+void CallBackFunc(int event, int x, int y, int flags, void* userdata)
+{
+    if  ( event == EVENT_LBUTTONDOWN )
+    {
+      
+            savex = x;
+            savey = y;
+        
+       
+        cout << "Left button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+    }
+    else if  ( event == EVENT_RBUTTONDOWN )
+    {
+        cout << "Right button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+    }
+    else if  ( event == EVENT_MBUTTONDOWN )
+    {
+        cout << "Middle button of the mouse is clicked - position (" << x << ", " << y << ")" << endl;
+    }
+    else if ( event == EVENT_MOUSEMOVE )
+    {
+        cout << "Mouse move over the window - position (" << x << ", " << y << ")" << endl;
+        
+    }
+}
+
 void Get_Threshold_Values(VideoCapture &videocam)
 {
+    namedWindow("raw",1);
+    setMouseCallback("raw", CallBackFunc, NULL);
 
     for(;;)
     {
@@ -87,14 +119,19 @@ void Get_Threshold_Values(VideoCapture &videocam)
             Scalar(0,0,255), 3, 3);
         putText(blankimage, maxmean, Point(50,200),FONT_HERSHEY_PLAIN, 4,
                 Scalar(0,0,255), 3, 3);
-        printf("%.2f, %.2f, %.f\n",minmeans[0],minmeans[1],minmeans[2]);
-        printf("%.2f, %.2f, %.f\n\n",maxmeans[0],maxmeans[1],maxmeans[2]);
-        
-        images.push_back(savegray);
+      
+    
         images.push_back(threshold_frame);
         images.push_back(blankimage);
         Mat out =concatMats(images, 2, 3, 300, 300);
         imshow( "Gray", out );
+        
+        resize(savegray,savegray,Size(300,300));
+        if(savex != -1){
+            rectangle(savegray, Point(savex-dr,savey-dr), Point(savex+dr,savey+dr),Scalar(0,0,255));
+        }
+      
+        imshow("raw", savegray);
         char c = waitKey(1);
         if(c =='q'){
             destroyWindow("Gray");
