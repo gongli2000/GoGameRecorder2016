@@ -84,54 +84,59 @@ void Get_Threshold_Values(VideoCapture &videocam)
         vector<float> ranges = {  0.0, 255.0  };
         
 
-        vector<Mat> inputimage = {gray},images;
-        Scalar means,stddev;
-        meanStdDev(gray, means,stddev);
-        char minmean[256], maxmean[256];
-    
-    
-        for(int i =0;i<3;i++){
-            Mat hist, histout;
-            vector<int> channels = {i};
-            calcHist(inputimage,channels,Mat(),hist,histSize,ranges);
-            histout =plothistogram(hist,histSize[0]);
 
-            cvtColor(histout,histout,CV_GRAY2BGR);
-            images.push_back(histout);
-        }
-        Mat threshold_frame;
-        double delta = 20;
-        Scalar minmeans = means - Scalar(delta,delta,delta);
-        Scalar maxmeans = means + Scalar(delta,delta,delta);
-        
-//        minmeans = Scalar(0,0,-20);
-//        maxmeans = Scalar(255,255,60);
-        inRange(gray, minmeans, maxmeans, threshold_frame);
-        cvtColor(threshold_frame,threshold_frame,CV_GRAY2BGR);
-        
-     
-        sprintf(minmean,"min %.2f,  %.2f, %.2f\n",
-                minmeans[0],minmeans[1],minmeans[2]);
-        sprintf(maxmean,"max %.2f, %.2f , %.2f\n\n",
-                maxmeans[0],maxmeans[1],maxmeans[2]);
-        
-        putText(blankimage, minmean, Point(50,100),FONT_HERSHEY_PLAIN, 4,
-            Scalar(0,0,255), 3, 3);
-        putText(blankimage, maxmean, Point(50,200),FONT_HERSHEY_PLAIN, 4,
-                Scalar(0,0,255), 3, 3);
+        resize(gray,gray,Size(300,300));
       
-    
-        images.push_back(threshold_frame);
-        images.push_back(blankimage);
-        Mat out =concatMats(images, 2, 3, 300, 300);
-        imshow( "Gray", out );
-        
-        resize(savegray,savegray,Size(300,300));
         if(savex != -1){
-            rectangle(savegray, Point(savex-dr,savey-dr), Point(savex+dr,savey+dr),Scalar(0,0,255));
+            Rect r(Point(savex-dr,savey-dr),Point(savex+dr,savey+dr));
+            rectangle(gray, r,Scalar(0,0,0));
+            vector<Mat> inputimage ={gray(r)} ,images;
+            Scalar means,stddev;
+            
+            meanStdDev(gray(r), means,stddev);
+            char minmean[256], maxmean[256];
+            
+            
+            for(int i =0;i<3;i++){
+                Mat hist, histout;
+                vector<int> channels = {i};
+                calcHist(inputimage,channels,Mat(),hist,histSize,ranges);
+                histout =plothistogram(hist,histSize[0]);
+                
+                cvtColor(histout,histout,CV_GRAY2BGR);
+                images.push_back(histout);
+            }
+            Mat threshold_frame;
+            double delta = 20;
+            Scalar minmeans = means - Scalar(delta,delta,delta);
+            Scalar maxmeans = means + Scalar(delta,delta,delta);
+            
+            //        minmeans = Scalar(0,0,-20);
+            //        maxmeans = Scalar(255,255,60);
+            inRange(gray, minmeans, maxmeans, threshold_frame);
+            cvtColor(threshold_frame,threshold_frame,CV_GRAY2BGR);
+            
+            
+            sprintf(minmean,"min %.2f,  %.2f, %.2f\n",
+                    minmeans[0],minmeans[1],minmeans[2]);
+            sprintf(maxmean,"max %.2f, %.2f , %.2f\n\n",
+                    maxmeans[0],maxmeans[1],maxmeans[2]);
+            
+            putText(blankimage, minmean, Point(50,100),FONT_HERSHEY_PLAIN, 4,
+                    Scalar(0,0,255), 3, 3);
+            putText(blankimage, maxmean, Point(50,200),FONT_HERSHEY_PLAIN, 4,
+                    Scalar(0,0,255), 3, 3);
+            
+            
+            images.push_back(threshold_frame);
+            images.push_back(blankimage);
+            Mat out =concatMats(images, 2, 3, 300, 300);
+            imshow( "Gray", out );
+
         }
-      
-        imshow("raw", savegray);
+        imshow("raw", gray);
+    
+    
         char c = waitKey(1);
         if(c =='q'){
             destroyWindow("Gray");
